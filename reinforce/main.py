@@ -25,11 +25,11 @@ if __name__ == "__main__":
     for ep in range(EPISODE):
         state,_ = env.reset()
         done = False
+        truncated = False
         total_reward = 0
         score = 0
-        scores = []
 
-        while not done:
+        while not done and not truncated:
             action = agent.choose_action(state)
             state_, reward, done, truncated, _ = env.step(action)
             agent.store_reward(reward)
@@ -38,10 +38,13 @@ if __name__ == "__main__":
 
         agent.learn()
         scores.append(score)
-
         avg_score = np.mean(scores[-100:])
 
         print("Episode: ", ep, "Score: ", score, "Avg score: ", avg_score)
+        if ep%500 == 0:
+            print("Saving agent at episode ", ep)
+            agent.save_agent(fname+f"_{ep}")
 
     x = [i+1 for i in range(len(scores))]
     plot_learning_curve(scores, x, figure_file)
+    agent.save_agent(fname)

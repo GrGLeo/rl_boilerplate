@@ -51,3 +51,9 @@ class Agent():
 
         self.action_memory = []
         self.reward_memory = []
+
+    def save_agent(self,path):
+        T.save(self.policy.state_dict(), path)
+
+    def load_agent(self,path):
+        self.policy.load_state_dict(T.load(path))
