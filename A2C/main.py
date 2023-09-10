@@ -12,7 +12,7 @@ if __name__ == "__main__":
     fname = "ACTOR_CRITIC_" + "LunarLander_" + str(agent.fc1_dims) +\
                     "_" + str(agent.fc2_dims) + "_" + str(EPISODE)
     figure_file = fname + ".png"
-
+    agent.save_agent(fname)
     for ep in range(EPISODE):
         state,_ = env.reset()
         done = False
@@ -29,7 +29,11 @@ if __name__ == "__main__":
 
         scores.append(score)
         avg_score = np.mean(scores[-100:])
+
+        if ep%500 == 0:
+            agent.save_agent(fname+f"_{ep}")
         print("episode: ",ep, "score: ", score, "avg_score: ", avg_score)
 
     x = [i+1 for i in range(EPISODE)]
-    plot_learning_curve(score, x, figure_file)
+    plot_learning_curve(scores, x, figure_file)
+    agent.save_agent(fname)

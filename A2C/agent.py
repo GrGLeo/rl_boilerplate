@@ -16,9 +16,9 @@ class A2CAgent():
 
 
     def choose_action(self, state):
-        state = T.tensor([state]).to(self.network.device)
+        state = T.tensor(list(state)).to(self.network.device)
         probabilities, _ = self.network.forward(state)
-        probabilities = F.softmax(probabilities, dim=1)
+        probabilities = F.softmax(probabilities)
         action_probs = T.distributions.Categorical(probabilities)
         action = action_probs.sample()
         log_prob = action_probs.log_prob(action)
@@ -29,8 +29,8 @@ class A2CAgent():
     def learn(self, state, reward, state_, done):
         self.network.optim.zero_grad()
 
-        state = T.tensor([state], dtype=T.float).to(self.network.device)
-        state_ = T.tensor([state_], dtype=T.float).to(self.network.device)
+        state = T.tensor(list(state), dtype=T.float).to(self.network.device)
+        state_ = T.tensor(list(state_), dtype=T.float).to(self.network.device)
         reward = T.tensor(reward, dtype=T.float).to(self.network.device)
 
         _, critic_value = self.network.forward(state)
@@ -42,3 +42,10 @@ class A2CAgent():
 
         (actor_loss+critic_loss).backward()
         self.network.optim.step()
+
+    def save_agent(self, path):
+        print(".. Saving model ..")
+        T.save(self.network.state_dict(), path)
+
+    def load_model(self, path):
+        self.network.load_state_dict(T.load(path))
