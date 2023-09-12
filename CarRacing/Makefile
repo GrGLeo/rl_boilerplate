@@ -3,3 +3,6 @@ clear_video:
 
 clear_models:
 	find . -type f -name "*.h5" -exec rm {} \;
+
+clear_all:
+	make clear_video && make clear_models

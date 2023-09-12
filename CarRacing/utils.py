@@ -34,4 +34,5 @@ def save_every(agent, ep, path, every=100):
 def grayscale_resize(state):
     state = cv2.cvtColor(state,cv2.COLOR_RGB2GRAY)
     state = cv2.resize(state,(48,48))
+    state = np.expand_dims(state,-1)
     return state

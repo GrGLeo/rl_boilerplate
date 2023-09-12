@@ -2,7 +2,7 @@ import gymnasium as gym
 import numpy as np
 import os
 from agent import ActorCriticAgent
-from utils import create_video, plot_learning_curve, save_every
+from utils import create_video, plot_learning_curve, save_every, grayscale_resize
 from collections import deque
 import time
 
@@ -24,6 +24,7 @@ start_time = time.time()
 for ep in range(EPISODE):
     actions = {0:0,1:0,2:0,3:0,4:0}
     state, _ = env.reset()
+    state = grayscale_resize(state)
     score = 0
     done = False
     truncated = False
@@ -33,12 +34,14 @@ for ep in range(EPISODE):
     while not done and not truncated:
         action = agent.choose_action(state)
         state_, reward, done ,truncated, _ = env.step(action)
+        image = state.copy()
+        state_ = grayscale_resize(state_)
         score += reward
         agent.learn(state, reward, state_, done)
         state = state_
         agent.update_epsilon()
         actions[action] += 1
-        images.append(state)
+        images.append(image)
 
 
     if score > best_score:

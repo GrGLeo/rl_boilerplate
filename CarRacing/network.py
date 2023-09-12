@@ -10,12 +10,12 @@ class Network(nn.Module):
         self.lr = lr
         self.n_actions = n_actions
 
-        self.conv1 = nn.Conv2d(3,8,kernel_size=3, padding="same")
+        self.conv1 = nn.Conv2d(1,8,kernel_size=3, padding="same")
         self.max1 = nn.MaxPool2d(2)
         self.conv2 = nn.Conv2d(8,8,kernel_size=3,padding="same")
         self.max2 = nn.MaxPool2d(2)
         self.flat = nn.Flatten()
-        self.fc1 = nn.Linear(4608,256)
+        self.fc1 = nn.Linear(1152,256)
         self.fc2 = nn.Linear(256,124)
         self.pi = nn.Linear(124,n_actions)
         self.v = nn.Linear(124,1)
