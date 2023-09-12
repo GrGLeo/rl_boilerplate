@@ -1,6 +1,7 @@
 import numpy as np
 import imageio
 import matplotlib.pyplot as plt
+import cv2
 
 
 def create_video(images, path):
@@ -28,3 +29,9 @@ def plot_learning_curve(scores, x, figure_file):
 def save_every(agent, ep, path, every=100):
     if ep % every == 0:
         agent.save_agent(path+"_"+str(ep)+".h5")
+
+
+def grayscale_resize(state):
+    state = cv2.cvtColor(state,cv2.COLOR_RGB2GRAY)
+    state = cv2.resize(state,(48,48))
+    return state

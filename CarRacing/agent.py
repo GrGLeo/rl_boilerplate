@@ -57,7 +57,8 @@ class ActorCriticAgent():
         self.network.optim.step()
 
     def update_epsilon(self):
-        self.epsilon *= 1 - self.decay
+        if self.epsilon > 0.05:
+            self.epsilon *= 1 - self.decay
 
     def save_agent(self, path):
         print(".. Saving Model ..")
