@@ -6,7 +6,7 @@ import numpy as np
 
 
 class ActorCriticAgent():
-    def __init__(self, lr, n_actions, gamma=0.99,epsilon=0.95, decay=1e-4, exploration=True):
+    def __init__(self, lr, n_actions, gamma=0.99,epsilon=0.95, decay=1e-5, exploration=True):
         self.gamma = gamma
         self.network = Network(lr, n_actions)
         self.n_actions = n_actions
@@ -19,17 +19,11 @@ class ActorCriticAgent():
 
 
     def choose_action(self, state):
-        if self.exploration:
-            if T.rand(1) < self.epsilon:
-                self.explo = True
-                random_values = T.rand(self.n_actions)
-                probabilities = random_values / random_values.sum()
-            else:
-                self.explo = False
-                state = T.tensor(np.array(state), dtype=T.float).to(self.network.device)
-                state = state.unsqueeze(0).permute(0, 3, 1, 2)
-                probabilities, _ = self.network.forward(state)
+        if T.rand(1) < self.epsilon:
+            random_values = T.rand(self.n_actions)
+            probabilities = random_values / random_values.sum()
         else:
+
             state = T.tensor(np.array(state), dtype=T.float).to(self.network.device)
             state = state.unsqueeze(0).permute(0, 3, 1, 2)
             probabilities, _ = self.network.forward(state)

@@ -23,3 +23,8 @@ def plot_learning_curve(scores, x, figure_file):
     plt.plot(x, running_avg)
     plt.title("Running average of previous 100 games")
     plt.savefig(figure_file)
+
+
+def save_every(agent, ep, path, every=100):
+    if ep % every == 0:
+        agent.save_agent(path+"_"+str(ep)+".h5")
