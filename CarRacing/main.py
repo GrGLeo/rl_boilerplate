@@ -12,7 +12,7 @@ name = "CarRacing_"
 agent = ActorCriticAgent(lr=5e-3, n_actions=5, decay=1e-5, exploration=True)
 
 
-EPISODE = 1500
+EPISODE = 500
 scores = []
 best_score = -np.inf
 PATH = "CarRacing_A2C_lr_"+str(agent.lr)
@@ -34,7 +34,7 @@ for ep in range(EPISODE):
     while not done and not truncated:
         action = agent.choose_action(state)
         state_, reward, done ,truncated, _ = env.step(action)
-        image = state.copy()
+        image = state_.copy()
         state_ = grayscale_resize(state_)
         score += reward
         agent.learn(state, reward, state_, done)
@@ -42,7 +42,6 @@ for ep in range(EPISODE):
         agent.update_epsilon()
         actions[action] += 1
         images.append(image)
-
 
     if score > best_score:
         v_path = VIDEO_PATH+"_ep_"+str(ep)

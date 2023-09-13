@@ -5,7 +5,7 @@ import torch.optim as optim
 
 
 class Network(nn.Module):
-    def __init__(self, lr, n_actions):
+    def __init__(self, lr: float, n_actions: int):
         super(Network, self).__init__()
         self.lr = lr
         self.n_actions = n_actions
