@@ -12,7 +12,7 @@ name = "CarRacing_"
 agent = ActorCriticAgent(lr=5e-3, n_actions=5, decay=1e-5, exploration=True)
 
 
-EPISODE = 500
+EPISODE = 10
 scores = []
 best_score = -np.inf
 PATH = "CarRacing_A2C_lr_"+str(agent.lr)

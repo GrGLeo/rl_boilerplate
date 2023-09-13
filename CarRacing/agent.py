@@ -29,7 +29,7 @@ class ActorCriticAgent():
             probabilities = random_values / random_values.sum()
         else:
 
-            state = T.tensor(np.array(state, dtype = np.float64), dtype=T.float).to(self.network.device)
+            state = T.tensor(np.array(state, dtype = np.float64), dtype=T.float, device=self.network.device)
             state = state.unsqueeze(0).permute(0, 3, 1, 2)
             probabilities, _ = self.network.forward(state)
         probabilities = F.softmax(probabilities, dim=0)
@@ -43,11 +43,11 @@ class ActorCriticAgent():
     def learn(self, state: np.array, reward: int, state_: np.array, done: bool):
         self.network.optim.zero_grad()
 
-        state = T.tensor(np.array(state, dtype = np.float64), dtype=T.float).to(self.network.device)
+        state = T.tensor(np.array(state, dtype = np.float64), dtype=T.float, device=self.network.device)
         state = state.unsqueeze(0).permute(0, 3, 1, 2)
-        state_ = T.tensor(np.array(state_, dtype = np.float64), dtype=T.float).to(self.network.device)
+        state_ = T.tensor(np.array(state_, dtype = np.float64), dtype=T.float, device=self.network.device)
         state_ = state_.unsqueeze(0).permute(0, 3, 1, 2)
-        reward = T.tensor(reward, dtype=T.float).to(self.network.device)
+        reward = T.tensor(reward, dtype=T.float, device=self.network.device)
 
 
         _,critic_value = self.network.forward(state)
