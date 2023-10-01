@@ -10,7 +10,7 @@ import numpy as np
 class Agent():
     def __init__(self, alpha, beta, state_dims, n_actions, tau, env,
                  gamma=0.99, update_actor_interval=2, warmup=1000,
-                 max_size=1000000, batch_size = 100, noise=0.1):
+                 max_size=1000000, batch_size = 100, noise=0.1, hardcore=False):
 
         self.batch_size = batch_size
         self.tau = tau
@@ -24,17 +24,17 @@ class Agent():
         self.update_actor_interval = update_actor_interval
 
         self.actor = ActorNetwork(actor_lr=alpha, state_dim=state_dims, n_actions=n_actions,
-                                  name="actor")
+                                  name="actor" if not hardcore else "hc_actor")
         self.critic_1 = CriticNetwork(critic_lr=beta, state_dim=state_dims, n_actions=n_actions,
-                                    name="critic_1")
+                                    name="critic_1" if not hardcore else "hc_critic_1")
         self.critic_2 = CriticNetwork(critic_lr=beta, state_dim=state_dims, n_actions=n_actions,
-                                      name="critic_2")
+                                      name="critic_2" if not hardcore else "hc_critic_2")
         self.target_actor = ActorNetwork(actor_lr=alpha, state_dim=state_dims, n_actions=n_actions,
-                                         name="target_actor")
+                                         name="target_actor" if not hardcore else "hc_target_actor")
         self.target_critic_1 = CriticNetwork(critic_lr=beta, state_dim=state_dims, n_actions=n_actions,
-                                             name="target_critic_1")
+                                             name="target_critic_1" if not hardcore else "hc_target_critic_1")
         self.target_critic_2 = CriticNetwork(critic_lr=beta, state_dim=state_dims, n_actions=n_actions,
-                                             name="target_critic_2")
+                                             name="target_critic_2" if not hardcore else "hc_target_critic_2")
         self.replay = ReplayBuffer(max_size=max_size, input_shape=state_dims, n_actions=n_actions)
 
         self.noise = noise

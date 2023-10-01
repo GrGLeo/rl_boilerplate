@@ -7,7 +7,7 @@ def main():
     env = gym.make("BipedalWalker-v3", hardcore=True, render_mode = "rgb_array")
     env = gym.wrappers.RecordVideo(env, "videos_hc", episode_trigger=lambda t: t%100 == 0)
     agent = Agent(alpha=0.001, beta=0.001, state_dims=env.observation_space.shape,
-                  tau=0.005, env=env, batch_size=100, n_actions=env.action_space.shape[0])
+                  tau=0.005, env=env, batch_size=100, n_actions=env.action_space.shape[0], hardcore=True)
     agent.load_models()
     n_games = 1500
     filename = 'Walker2d_hardcore' + str(n_games) + ".png"
