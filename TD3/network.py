@@ -8,7 +8,7 @@ import os
 
 class CriticNetwork(nn.Module):
     def __init__(self,critic_lr, state_dim, n_actions, name, chkpt_dir="tmp/models"):
-        super(self,CriticNetwork).__init__()
+        super(CriticNetwork, self).__init__()
         self.critic_lr = critic_lr
         self.state_dim = state_dim
         self.n_actions = n_actions
@@ -47,7 +47,7 @@ class CriticNetwork(nn.Module):
 
 class ActorNetwork(nn.Module):
     def __init__(self, actor_lr, state_dim, n_actions, name, chkpt_dir="tmp/models"):
-        super(self, ActorNetwork).__init__()
+        super(ActorNetwork, self).__init__()
         self.actor_lr = actor_lr
         self.state_dim = state_dim
         self.n_actions = n_actions
@@ -57,12 +57,12 @@ class ActorNetwork(nn.Module):
 
         self.fc1 = nn.Linear(*self.state_dim,400)
         self.fc2 = nn.Linear(400,300)
-        self.mu = (300, self.n_actions)
+        self.mu = nn.Linear(300, self.n_actions)
 
         self.device = T.device("cuda:0" if T.cuda.is_available() else "cpu")
         self.to(self.device)
 
-        self.optim = optim.Adam(params = self.parameters(), lr = self.action_lr)
+        self.optim = optim.Adam(params = self.parameters(), lr = self.actor_lr)
 
     def forward(self, state):
         state = state.to(self.device)
